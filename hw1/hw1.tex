@@ -1,0 +1,20 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\title{Adaptive Filters Homework 1}
+\author{Cory Nezin}
+\begin{document}
+\maketitle
+\begin{enumerate}
+\item Let $\{u_i\}_{i=1}^r$ be r linearly independent $M \times 1$ vectors, and $\{v_i\}_{i=1}^r$ be r linearly independent $N\times 1$ vectors.  Show that the $M \times N$ matrix $A$ given by:
+$$ A = \sum_{i=1}^r u_iv_i^H$$
+Proof:\\
+Let $y \in \mathcal{R}_A$, then for some $x\in M^{N\times 1}$\\
+$y = Ax = \left(\sum_{i=1}^r u_iv_i^H\right)x$.  Since matrix multiplication is distributive,\\
+$y = Ax = \sum_{i=1}^r u_iv_i^H x$.  Since matrix multiplication is associative,\\
+$y = Ax = \sum_{i=1}^r u_i(v_i^H x)$.  Since $v_i^H x$ is scalar,\\
+$y = Ax = \sum_{i=1}^r (v_i^Hx) u_i$\\
+Thus since $\{u_i\}$ is linearly independent, it is a basis for $\mathcal{R}_A$ and\\
+$\text{\it rank } A = \text{\it dim } \mathcal{R} = r$ $\blacksquare$
+\end{enumerate}
+\end{document}
