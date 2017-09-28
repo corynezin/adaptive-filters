@@ -1,7 +1,6 @@
 % Name: Cory Nezin
 % Date: 09/27/2017
 % Goal: Complete Problem 2, HW1
-%% 2
 %% a)
 A = randn(10,5);
 P = orth_proj(A);
