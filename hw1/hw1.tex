@@ -14,7 +14,90 @@ $y = Ax = \left(\sum_{i=1}^r u_iv_i^H\right)x$.  Since matrix multiplication is 
 $y = Ax = \sum_{i=1}^r u_iv_i^H x$.  Since matrix multiplication is associative,\\
 $y = Ax = \sum_{i=1}^r u_i(v_i^H x)$.  Since $v_i^H x$ is scalar,\\
 $y = Ax = \sum_{i=1}^r (v_i^Hx) u_i$\\
-Thus since $\{u_i\}$ is linearly independent, it is a basis for $\mathcal{R}_A$ and\\
-$\text{\it rank } A = \text{\it dim } \mathcal{R} = r$ $\blacksquare$
+Let $V$ be the matrix obtained by concatenating all $v_i$ vertically.  Since all rows are lienarly independent, the system is consistent.
+Therefore if we let $Vx=c$, we can choose an x producing any vector and we have:\\
+$y = \sum_{i=1}^r c_iu_i$, so $\mathcal{R_A}$ is spanned by $\{u_i\}_{i=1}^r$.\\
+Since $\{u_i\}_{i=1}^r$ is linearly independent, it is a basis for $\mathcal{R}_A$ and\\
+$\text{\it rank } A = \text{\it dim } \mathcal{R_A} = r$ $\blacksquare$
+\item Done 
+\item The matrix inversion lemma is:\\
+$$(B^{-1} + CD^{-1}C^H)^{-1} = B - BC(D+C^HBC)^{-1}C^HB$$
+\begin{enumerate}
+\item Given $R = \delta I + \alpha uu^H$, use the matrix inversion lemma to find a simplified formula for $R^{-1}$.\\
+Let $D = 1/\alpha$, $ B = 1/\delta \times I$, and $C = u$ then we have:\\
+$R = B + D^{-1}CC^H$.  Since $D$ is scalar, $R = B + CD^{-1}C^H$.\\
+Leveraging the lemma we have\\
+$R^{-1} = 1/\delta \times I - 1/\delta \times u (1/\alpha + 1/\delta u^Hu)^{-1} u^H I/\delta$\\
+Since $(1/\alpha + 1/\delta u^Hu)$ is a scalar,\\
+$R^{-1} = I/\delta - \frac{1}{\delta^2(1/\alpha + (1/\delta) u^Hu)}uu^H$
+\item Give a specific condition for $\alpha$ under which $R^{-1}$ would not exist.\\
+Setting the denominator to zero we have\\
+$\frac{1}{\alpha} = \frac{1}{\delta} uu^H \implies$
+$\alpha = \frac{\delta}{uu^H}$
+\end{enumerate}
+\item Consider a signal u formed as a superposition of two sinewaves at respective frequencies $w_1,w_2$, and additive white noise.  Specifically, with:
+$$ s_i = \frac{1}{\sqrt{M}} 
+\begin{bmatrix}
+1\\
+e^{-j\omega_i}\\
+\vdots\\
+e^{-j(M-1)\omega_i}
+\end{bmatrix}$$
+$$u = \alpha_1 s_1 + \alpha_2 s_2 + v$$
+where $\alpha_i,i=1,2$ are uncorrelated random complex amplitudes (actually they represent amplitude and phase), and $v(n)$ is $0-mean$ white noise vector (the components of v are uncorrelated with each other and the $\alpha_i$ values).  Assume $E(\alpha_i) = 0$, which would be consistent for example by assuming each has a phase uniform from $0$ to $2\pi$, and:
+\begin{align*}
+E(|\alpha_i|^2) &= \sigma_i^2, i=1,2\\
+E(vv^H) &= \sigma_v I
+\end{align*}
+Also assume $\sigma_1^2 > \sigma_2^2$, and that $|\omega_1-\omega_2| = \frac{2\pi}{M}k$ for some integer $k$ not a multiple of $M$
+\begin{enumerate}
+\item Check that $s_1,s_2$ are unit orthogonal vectors.\\
+\begin{align*}
+\langle s_1,s_2\rangle &= \sum_{n=0}^{M-1}\left(\frac{1}{\sqrt{M}}e^{-jn\omega_1}\frac{1}{\sqrt{M}}e^{jn\omega_2}\right) = \frac{1}{M}\sum_{n=1}^{M-1}e^{jn(\omega_2-\omega_1)}\\
+& = \frac{1-e^{jM(\omega_2-\omega_1)}}{1-e^{j(\omega_2-\omega_1)}} = \frac{1-e^{j2\pi(k_2-k_1)}}{1-e^{j(\omega_2-\omega_1)}}
+\end{align*}
+Since $\omega_2 - \omega_1$ is not a multiple of $2\pi$ the denominator is not $0$ and since $k_2-k_1$ is an integer, the numerator is $1-1 = 0$, so the vectors are orthogonal. \\
+Similarly, $\langle s_i,s_i \rangle = \\frac{1}{M}\sum_{n=1}^{M-1}e^{jn(\omega_i-\omega_i)}\ =\frac{1}{M}\sum_{n=1}^{M-1}1 = 1$\\
+$\blacksquare$
+\item Verify the following formula $R = E(u(n)u^H(n))$:\\
+$$R = \sigma_1^2s_1s_1^H + \sigma_2^2s_2s_2^H + \sigma_v I$$
+\begin{align*}
+R &= E(u(n)u^H(n))\\
+&= E( (\alpha_1s_1+\alpha_2s_2+v)(\alpha_1s_1+\alpha_2s_2+v)^H )\\
+&= E( (\alpha_1s_1+\alpha_2s_2+v)(\alpha_1^*s_1^H+\alpha_2^*s_2+v^H) )\\
+\end{align*}
+Note that any cross terms ($v$ multiplied by $a_i$ or $a_i$ multiplied by $a_j,j\neq i$)
+have an expected value of $0$ since they are uncorrelated and have mean $0$.  Since expectation is linear, we can seperate expressions containing these terms into their own expectation and move the multiplicative constant outside thus completely eliminating the term leaving:
+\begin{align*}
+R &= E(u(n)u^H(n))\\
+&= E(|\alpha_1|^2 s_1s_1^H + |\alpha_2|^2s_2s_2^H + vv^H)\\
+&= E(|\alpha_1|^2 s_1s_1^H) + E(|\alpha_2|^2s_2s_2^H) + E(vv^H)\\
+&= s_1s_1^HE(|\alpha_1|^2 ) + s_2s_2^HE(|\alpha_2|^2) + E(vv^H)\\
+&= \sigma_1^2s_1s_1^H + \sigma_2^2s_2s_2^H + \sigma_v^2 I\\
+\end{align*}
+\item Show that $s_1,s_2$ are each eigenvectors of R, and specify the corresponding eigenvalues\\
+\begin{align*}
+Rs_1 &= (\sigma_1^2s_1s_1^H + \sigma_2^2s_2s_2^H + \sigma_v^2 I)s_1\\
+&= \sigma_1^2s_1s_1^Hs_1 + \sigma_2^2s_2s_2^Hs_1 + \sigma_v^2 s_1\\
+&= \sigma_1^2s_1 + \sigma_2^2s_2s_2^Hs_1 + \sigma_v^2 s_1 \text{ (by normality)}\\
+&= \sigma_1^2s_1 + 0 + \sigma_v^2 s_1 \text{ (by orthogonality)}\\
+&= (\sigma_1^2 + \sigma_v^2)s_1
+\end{align*}
+Thus $s_1$ is an eigenvector for $R$ and $\sigma_1^2+\sigma_v^2$ is the corresponding eigenvalue.\\
+Similarly, $S_2$ is an eigenvector for $R$ and $\sigma_2^2+\sigma_v^2$ is the corresponding eigenvalue.\\
+$\blacksquare$
+\item If q is a unit vector such that $q \perp s_i, i=1,2$, show that it is an eigenvector of R and specify the corresponding eigenvalue.
+\begin{align*}
+Rq &= (\sigma_1^2s_1s_1^H + \sigma_2^2s_2s_2^H + \sigma_v^2 I)q\\
+&= \sigma_1^2s_1s_1^Hq + \sigma_2^2s_2s_2^Hq + \sigma_v^2 q\\
+&= 0 + 0 + \sigma_v^2 q \text{ (by orthogonality)}\\
+&= (\sigma_v^2)q
+\end{align*}
+So $q$ is an eigenvector of $R$ and the corresponding eigenvalue is $\sigma_v^2$\\
+$\blacksquare$
+\item Consider the orthonormal vectors $\{s_1,s_2,q_3,\hdots,q_M\}$.  That is, we take vectors $q_i, 3\leq i \leq M$, which are unit length, mutually orthogonal, and orthogonal to $s_i,i=1,2$.  Examine this set to list all distinct eigenvalues of $R$, with multiplicity, and identify a basis for the corresponding eigenspaces.\\
+
+Since R is an $M\times M$ matrix, it has $M$ eigenvalues.  As we showed, two of those eigenvalues are given by $\sigma_1^2 + \sigma_v^2$ and $\sigma_2+\sigma_v^2$.  For a given $q_i$, it must be an eigenvector with eigenvalue $\sigma_v^2$.  Since each $q_i$ are mutually orthogonal, they are linearly independent and therefore they each correspond to one eigenvalue in the spectrum.  Therefore $\sigma_v^2$ has multiplicity $M-2$ which accounts for all eigenvalues.
+\end{enumerate}
 \end{enumerate}
 \end{document}

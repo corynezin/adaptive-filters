@@ -1,0 +1,95 @@
+% Name: Cory Nezin
+% Date: 09/27/2017
+% Goal: Complete Problem 2, HW1
+%% 2
+%% a)
+A = randn(10,5);
+P = orth_proj(A);
+%% b)
+norm(A);
+%% c)
+B = randn(10,7);
+matrix_dist(A,A);
+%% d)
+% Calculate rotation matrix (about y axis)
+roty = @(deg) [cosd(deg)  0 sind(deg) ;
+               0          1 0         ;
+               -sind(deg) 0 cosd(deg)];
+           
+x = [1 0 0].';
+% Perform rotation
+x_rotated = roty(10) * x;
+matrix_dist(x,x_rotated)
+sind(10)
+%% e)
+x = randi(11,4) - 1;
+y = randi(11,4) - 1;
+a = x(:,1) + 1j*y(:,2);
+b = y(:,3) + 1j*y(:,4);
+matrix_dist( [a,b,a+b], [2*a+b,2*a-b] )
+%% f)
+a = randi(11,4,2)-1;
+b = sum(a,2);
+A = [a b];
+rank(A)
+%% g)
+An = A + sqrt(0.1) * randn(size(A)); % Add noise
+rank(An)                             % Confirm rank is 2
+[U,S,V] = svd(An);
+S(3,3) = 0;                          % Set smallest singular value to 0
+A2 = U*S*V';                         % Compute rank 2 approximation
+rank(A2)                             % Confirm rank is 2
+norm( An - A2 )
+norm( A  - A2 )
+matrix_dist( A, A2)
+%% h)
+% 1.
+[U,S,V] = svd(A);
+S = S';
+S(1,1) = 1/S(1,1); S(2,2) = 1/S(2,2);
+Apinv = V*S*U'
+pinv(A)
+% 2. Neither can be used to compute the inverse since A'A and AA' are
+%    not invertible.
+% 3.
+[V2,D2] = eig(A'*A); [V1,D1] = eig(A*A');
+[U,S,V] = svd(A);
+% 4.
+% The nonzero singular values squared equal the nonzero eigenvalues:
+diag(S.^2)
+diag(D1)
+diag(D2)
+% Every left singular vector is an eigenvector of AA':
+% The nonzero eigenvalues correspond to the last two rows in V1
+% These vectors also appear (scaled by +/- 1) in U - the left
+% singular vectors of A*A'
+U
+V1
+% Every right singular vector is an eigenvector of A'A:
+% The nonzero eigenvalues correspond to the last two rows in V2
+% These vectors also appear (scaled by +/- 1) in V - the right
+% singular vectors of A'*A (although so does the third column -
+% coincidence?)
+V
+V2
+% 4. 
+% N_A^perp:
+r = rank(A);
+U = U(:,1:r);
+V = V(:,1:r);
+P_N_A_perp = V*V'
+% R_A:
+P_R_A = U*U'
+% N_A:
+P_N_A = (eye(size(P_N_A_perp)) - P_N_A_perp)'
+% R_A^perp:
+P_R_A_perp = (eye(size(P_R_A)) - P_R_A)'
+% 5. Check the product is zero:
+P_N_A*P_N_A_perp
+P_R_A*P_R_A_perp
+%% 3
+% -done
+%% 4
+
+
+
